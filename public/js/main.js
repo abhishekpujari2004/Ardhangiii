@@ -1,4 +1,6 @@
-const API_BASE_URL = window.location.hostname === 'localhost' ? 'http://localhost:5000/api' : '/api';
+const API_BASE_URL = window.location.origin && window.location.origin !== 'null'
+  ? `${window.location.origin}/api`
+  : '/api';
 
 function checkLogin() {
   const user = localStorage.getItem('user');
@@ -35,7 +37,9 @@ async function fetchAPI(endpoint, method = 'GET', data = null) {
       options.body = JSON.stringify(data);
     }
 
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, options);
+    const url = `${API_BASE_URL}${endpoint}`;
+    console.log('API request:', url, method, data);
+    const response = await fetch(url, options);
     const result = await response.json();
 
     if (!response.ok) {
@@ -89,11 +93,24 @@ async function handleSignup() {
     };
 
     try {
-      await fetchAPI('/signup', 'POST', formData);
-      showAlert('Signup successful! Redirecting to login...', 'success');
+      const result = await fetchAPI('/signup', 'POST', formData);
+      showAlert('Signup successful! Redirecting to members...', 'success');
+
+      const loggedUser = {
+        id: result.userId,
+        name: formData.name,
+        email: formData.email,
+        mobile: formData.mobile,
+        gender: formData.gender,
+        city: formData.city,
+        religion: formData.religion,
+        surveyCompleted: false
+      };
+
+      localStorage.setItem('user', JSON.stringify(loggedUser));
       setTimeout(() => {
-        window.location.href = '/login';
-      }, 1800);
+        window.location.href = '/members';
+      }, 1400);
     } catch (error) {
       showAlert(error.message, 'error');
     }

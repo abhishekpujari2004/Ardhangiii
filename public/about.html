@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>About Us - Ardhangii</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/about.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/about.css">
 </head>
 <body>
   <nav class="main-nav">
-    <div class="nav-brand"><a href="/">Ardhangii</a></div>
+    <div class="nav-brand"><a href="/"><img src="/logo.jpeg" alt="Ardhangii Logo" class="logo-img"></a></div>
     <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation"><span></span></button>
     <div class="nav-links">
       <ul>
@@ -32,8 +32,29 @@
     </div>
   </section>
 
+  <!-- Step Navigation -->
+  <section class="step-navigation">
+    <div class="steps-wrapper">
+      <button class="step-link" data-target="team-section">
+        <span class="step-label">Team</span>
+      </button>
+      <button class="step-link" data-target="about-content">
+        <span class="step-label">About</span>
+      </button>
+      <button class="step-link" data-target="membership-section">
+        <span class="step-label">Membership</span>
+      </button>
+      <button class="step-link" data-target="how-to-section">
+        <span class="step-label">How to Use</span>
+      </button>
+      <button class="step-link" data-target="mission-section">
+        <span class="step-label">Mission</span>
+      </button>
+    </div>
+  </section>
+
   <!-- Our Team Section -->
-  <section class="team-section">
+  <section class="team-section" id="team-section">
     <div class="container">
       <h2 class="section-title">👨‍💻 Our Team</h2>
       <div class="team-grid">
@@ -66,7 +87,7 @@
   </section>
 
   <!-- About Us Section -->
-  <section class="about-content">
+  <section class="about-content" id="about-content">
     <div class="container">
       <h2 class="section-title">🌐 About Us</h2>
       <div class="about-text">
@@ -78,7 +99,7 @@
   </section>
 
   <!-- Membership Section -->
-  <section class="membership-section">
+  <section class="membership-section" id="membership-section">
     <div class="container">
       <h2 class="section-title">🎯 Membership</h2>
       <div class="membership-grid">
@@ -119,7 +140,7 @@
   </section>
 
   <!-- How to Use Section -->
-  <section class="how-to-section">
+  <section class="how-to-section" id="how-to-section">
     <div class="container">
       <h2 class="section-title">📖 How to Use</h2>
       <div class="steps-container">
@@ -153,7 +174,7 @@
   </section>
 
   <!-- Mission & Promise Section -->
-  <section class="mission-section">
+  <section class="mission-section" id="mission-section">
     <div class="container">
       <h2 class="section-title">🎯 Mission & Promise</h2>
       <div class="mission-grid">
@@ -174,7 +195,7 @@
   </section>
 
   <!-- Security Section -->
-  <section class="security-section">
+  <section class="security-section" id="security-section">
     <div class="container">
       <h2 class="section-title">🔐 Your Security & Safety</h2>
       <div class="security-grid">
@@ -233,5 +254,30 @@
   </footer>
 
   <script src="js/main.js"></script>
+  
+  <!-- Step Navigation Script -->
+  <script>
+    // Smooth scroll to sections when step links are clicked
+    document.querySelectorAll('.step-link').forEach(button => {
+      button.addEventListener('click', function() {
+        const targetId = this.getAttribute('data-target');
+        const targetSection = document.getElementById(targetId);
+        
+        if (targetSection) {
+          // Smooth scroll to the target section
+          targetSection.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start' 
+          });
+          
+          // Add active state (optional visual feedback)
+          document.querySelectorAll('.step-link').forEach(btn => {
+            btn.style.opacity = '0.8';
+          });
+          this.style.opacity = '1';
+        }
+      });
+    });
+  </script>
 </body>
 </html>

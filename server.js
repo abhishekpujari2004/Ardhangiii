@@ -85,7 +85,7 @@ process.on('SIGINT', async () => {
   process.exit(0);
 });
 
-// User Schema
+// User Schema (Extended with survey fields)
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -130,6 +130,155 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  // Survey Fields
+  surveyCompleted: {
+    type: Boolean,
+    default: false
+  },
+  height: String,
+  diet: {
+    type: [String],
+    enum: ['Veg', 'Non-Veg', 'Eggetarian', 'Vegan', 'Occasionally NV', 'Jain']
+  },
+  qualification: String,
+  collegeName: String,
+  income: String,
+  hobbies: [String],
+  profession: String,
+  workDetails: {
+    sector: String,
+    type: String // Private, Gov, Defense, Business, No work
+  },
+  agePreference: {
+    min: Number,
+    max: Number
+  },
+  religionPreference: [String],
+  locationPreference: [String],
+  interests: [String],
+  lifestyle: {
+    smoking: String, // Yes, No, Occasionally
+    drinking: String, // Yes, No, Occasionally
+    caste: String
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
+});
+
+// Survey Schema (Alternative: separate model)
+const surveySchema = new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+    unique: true
+  },
+  height: String,
+  diet: [String],
+  qualification: String,
+  collegeName: String,
+  income: String,
+  hobbies: [String],
+  profession: String,
+  workDetails: {
+    sector: String,
+    type: String
+  },
+  agePreference: {
+    min: Number,
+    max: Number
+  },
+  religionPreference: [String],
+  locationPreference: [String],
+  interests: [String],
+  lifestyle: {
+    smoking: String,
+    drinking: String,
+    caste: String
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now
+  }
+});
+
+// Like Schema
+const likeSchema = new mongoose.Schema({
+  likerId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  likedId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
+});
+
+// Match Schema
+const matchSchema = new mongoose.Schema({
+  user1: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  user2: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  status: {
+    type: String,
+    enum: ['pending', 'matched', 'rejected'],
+    default: 'pending'
+  },
+  compatibility: {
+    type: Number,
+    min: 0,
+    max: 100
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
+});
+
+// Message Schema
+const messageSchema = new mongoose.Schema({
+  senderId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  receiverId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  matchId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Match',
+    required: true
+  },
+  message: {
+    type: String,
+    required: true
+  },
+  read: {
+    type: Boolean,
+    default: false
+  },
   createdAt: {
     type: Date,
     default: Date.now
@@ -157,6 +306,10 @@ const feedbackSchema = new mongoose.Schema({
 });
 
 const User = mongoose.model('User', userSchema);
+const Survey = mongoose.model('Survey', surveySchema);
+const Like = mongoose.model('Like', likeSchema);
+const Match = mongoose.model('Match', matchSchema);
+const Message = mongoose.model('Message', messageSchema);
 const Feedback = mongoose.model('Feedback', feedbackSchema);
 
 // Routes
@@ -298,6 +451,331 @@ app.post('/api/feedback', async (req, res) => {
   }
 });
 
+// ============ SURVEY ENDPOINTS ============
+
+// Submit Survey
+app.post('/api/survey', async (req, res) => {
+  try {
+    const { userId, height, diet, qualification, collegeName, income, hobbies, profession, workDetails, agePreference, religionPreference, locationPreference, interests, lifestyle } = req.body;
+
+    if (!userId) {
+      return res.status(400).json({ error: 'User ID is required' });
+    }
+
+    let survey = await Survey.findOne({ userId });
+
+    if (survey) {
+      // Update existing survey
+      survey = Object.assign(survey, {
+        height,
+        diet,
+        qualification,
+        collegeName,
+        income,
+        hobbies,
+        profession,
+        workDetails,
+        agePreference,
+        religionPreference,
+        locationPreference,
+        interests,
+        lifestyle,
+        updatedAt: new Date()
+      });
+    } else {
+      // Create new survey
+      survey = new Survey({
+        userId,
+        height,
+        diet,
+        qualification,
+        collegeName,
+        income,
+        hobbies,
+        profession,
+        workDetails,
+        agePreference,
+        religionPreference,
+        locationPreference,
+        interests,
+        lifestyle
+      });
+    }
+
+    await survey.save();
+
+    // Mark user survey as completed
+    await User.findByIdAndUpdate(userId, { surveyCompleted: true });
+
+    res.status(201).json({ message: 'Survey submitted successfully', survey });
+  } catch (error) {
+    console.error('Survey error:', error);
+    res.status(500).json({ error: 'Server error submitting survey' });
+  }
+});
+
+// Get Survey by User ID
+app.get('/api/survey/:userId', async (req, res) => {
+  try {
+    const survey = await Survey.findOne({ userId: req.params.userId });
+    if (!survey) {
+      return res.status(404).json({ error: 'Survey not found' });
+    }
+    res.json({ survey });
+  } catch (error) {
+    console.error('Get survey error:', error);
+    res.status(500).json({ error: 'Server error fetching survey' });
+  }
+});
+
+// ============ MATCHING ENDPOINTS ============
+
+// Calculate compatibility score
+const calculateCompatibility = (survey1, survey2) => {
+  let score = 0;
+  let factors = 0;
+
+  // Age compatibility
+  if (survey1 && survey2 && survey1.agePreference && survey2.agePreference) {
+    const user1Age = new Date().getFullYear() - new Date(survey1.birthdate).getFullYear();
+    const user2Age = new Date().getFullYear() - new Date(survey2.birthdate).getFullYear();
+    
+    if (user1Age >= survey2.agePreference.min && user1Age <= survey2.agePreference.max) {
+      score += 20;
+    }
+    factors += 20;
+  }
+
+  // Religion compatibility
+  if (survey1?.religionPreference?.includes(survey2?.religion)) {
+    score += 20;
+  }
+  factors += 20;
+
+  // Location compatibility
+  if (survey1?.locationPreference?.includes(survey2?.city)) {
+    score += 20;
+  }
+  factors += 20;
+
+  // Interests similarity
+  if (survey1?.interests && survey2?.interests) {
+    const commonInterests = survey1.interests.filter(i => survey2.interests.includes(i));
+    const similarity = (commonInterests.length / Math.max(survey1.interests.length, survey2.interests.length)) * 20;
+    score += similarity;
+  }
+  factors += 20;
+
+  // Lifestyle compatibility
+  if (survey1?.lifestyle && survey2?.lifestyle) {
+    if (survey1.lifestyle.smoking === survey2.lifestyle.smoking) score += 10;
+    if (survey1.lifestyle.drinking === survey2.lifestyle.drinking) score += 10;
+  }
+  factors += 20;
+
+  return Math.round((score / factors) * 100);
+};
+
+// Get Matched Profiles for User
+app.get('/api/matches/:userId', async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const user = await User.findById(userId);
+    const userSurvey = await Survey.findOne({ userId });
+
+    if (!user || !userSurvey) {
+      return res.status(404).json({ error: 'User or survey not found' });
+    }
+
+    // Get users who are opposite gender
+    const potentialMatches = await User.find({
+      _id: { $ne: userId },
+      gender: user.gender === 'Male' ? 'Female' : 'Male'
+    });
+
+    // Calculate compatibility
+    const matches = await Promise.all(
+      potentialMatches.map(async (candidate) => {
+        const candidateSurvey = await Survey.findOne({ userId: candidate._id });
+        if (!candidateSurvey) return null;
+
+        const compatibility = calculateCompatibility(userSurvey, candidateSurvey);
+        
+        // Check if already liked
+        const liked = await Like.findOne({
+          likerId: userId,
+          likedId: candidate._id
+        });
+
+        return {
+          user: candidate,
+          compatibility,
+          liked: !!liked
+        };
+      })
+    );
+
+    // Filter out nulls and sort by compatibility
+    const sortedMatches = matches
+      .filter(m => m !== null)
+      .sort((a, b) => b.compatibility - a.compatibility);
+
+    res.json({ matches: sortedMatches });
+  } catch (error) {
+    console.error('Get matches error:', error);
+    res.status(500).json({ error: 'Server error fetching matches' });
+  }
+});
+
+// ============ LIKE ENDPOINTS ============
+
+// Like a user
+app.post('/api/like', async (req, res) => {
+  try {
+    const { likerId, likedId } = req.body;
+
+    if (!likerId || !likedId) {
+      return res.status(400).json({ error: 'Liker and liked user IDs are required' });
+    }
+
+    if (likerId === likedId) {
+      return res.status(400).json({ error: 'Cannot like yourself' });
+    }
+
+    // Check if already liked
+    const existingLike = await Like.findOne({ likerId, likedId });
+    if (existingLike) {
+      return res.status(400).json({ error: 'Already liked this user' });
+    }
+
+    const like = new Like({ likerId, likedId });
+    await like.save();
+
+    // Check for mutual like (Match)
+    const mutualLike = await Like.findOne({ likerId: likedId, likedId: likerId });
+    if (mutualLike) {
+      // Create match
+      const match = new Match({
+        user1: likerId,
+        user2: likedId,
+        status: 'matched',
+        compatibility: 100
+      });
+      await match.save();
+
+      res.json({
+        message: 'Matched! You can now chat',
+        matched: true,
+        matchId: match._id
+      });
+    } else {
+      res.json({
+        message: 'Like sent successfully',
+        matched: false
+      });
+    }
+  } catch (error) {
+    console.error('Like error:', error);
+    res.status(500).json({ error: 'Server error processing like' });
+  }
+});
+
+// Unlike a user
+app.post('/api/unlike', async (req, res) => {
+  try {
+    const { likerId, likedId } = req.body;
+
+    if (!likerId || !likedId) {
+      return res.status(400).json({ error: 'Liker and liked user IDs are required' });
+    }
+
+    await Like.deleteOne({ likerId, likedId });
+    res.json({ message: 'Like removed successfully' });
+  } catch (error) {
+    console.error('Unlike error:', error);
+    res.status(500).json({ error: 'Server error removing like' });
+  }
+});
+
+// ============ CHAT ENDPOINTS ============
+
+// Get matches for user (for chat)
+app.get('/api/user-matches/:userId', async (req, res) => {
+  try {
+    const userId = req.params.userId;
+
+    const matches = await Match.find({
+      $or: [
+        { user1: userId, status: 'matched' },
+        { user2: userId, status: 'matched' }
+      ]
+    })
+      .populate('user1')
+      .populate('user2');
+
+    res.json({ matches });
+  } catch (error) {
+    console.error('Get matches error:', error);
+    res.status(500).json({ error: 'Server error fetching matches' });
+  }
+});
+
+// Send message
+app.post('/api/message', async (req, res) => {
+  try {
+    const { senderId, receiverId, matchId, message } = req.body;
+
+    if (!senderId || !receiverId || !matchId || !message) {
+      return res.status(400).json({ error: 'All fields are required' });
+    }
+
+    const msg = new Message({
+      senderId,
+      receiverId,
+      matchId,
+      message
+    });
+
+    await msg.save();
+    res.status(201).json({ message: 'Message sent successfully', msg });
+  } catch (error) {
+    console.error('Send message error:', error);
+    res.status(500).json({ error: 'Server error sending message' });
+  }
+});
+
+// Get chat history
+app.get('/api/messages/:matchId', async (req, res) => {
+  try {
+    const messages = await Message.find({ matchId: req.params.matchId })
+      .sort({ createdAt: 1 })
+      .populate('senderId', 'name')
+      .populate('receiverId', 'name');
+
+    res.json({ messages });
+  } catch (error) {
+    console.error('Get messages error:', error);
+    res.status(500).json({ error: 'Server error fetching messages' });
+  }
+});
+
+// Mark messages as read
+app.post('/api/messages-read', async (req, res) => {
+  try {
+    const { matchId, receiverId } = req.body;
+
+    await Message.updateMany(
+      { matchId, receiverId, read: false },
+      { read: true }
+    );
+
+    res.json({ message: 'Messages marked as read' });
+  } catch (error) {
+    console.error('Mark read error:', error);
+    res.status(500).json({ error: 'Server error updating messages' });
+  }
+});
+
 // Serve static HTML pages
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
@@ -307,12 +785,20 @@ app.get('/signup', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'signup.html'));
 });
 
+app.get('/survey', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'survey.html'));
+});
+
 app.get('/login', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
 app.get('/members', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'members.html'));
+});
+
+app.get('/chat', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'chat.html'));
 });
 
 app.get('/about', (req, res) => {

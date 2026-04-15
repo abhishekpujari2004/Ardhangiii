@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat & Matches - Ardhangii</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/chat.css">
+</head>
+<body>
+  <nav class="main-nav">
+    <div class="nav-brand"><a href="/"><img src="/logo.jpeg" alt="Ardhangii Logo" class="logo-img"></a></div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation"><span></span></button>
+    <div class="nav-links">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About Us</a></li>
+        <li><a href="/members">Browse Profiles</a></li>
+        <li><a href="/feedback">Feedback</a></li>
+      </ul>
+      <div class="nav-right">
+        <button onclick="logout()" class="btn-logout">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Chat Container -->
+  <div class="chat-container">
+    <!-- Matches List -->
+    <div class="matches-list">
+      <h2>💬 Your Matches</h2>
+      <div class="matches-scroll" id="matchesList">
+        <div class="empty-state">
+          <p>No matches yet</p>
+          <a href="/members" class="btn">Find Matches</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chat Window -->
+    <div class="chat-window">
+      <div id="noChat" class="no-chat">
+        <h2>Select a match to start chatting</h2>
+        <p>Once you and someone mutually like each other, you can chat here</p>
+      </div>
+
+      <div id="chatActive" class="chat-active" style="display: none;">
+        <!-- Chat Header -->
+        <div class="chat-header">
+          <div class="chat-info">
+            <h3 id="chatName">Loading...</h3>
+            <p id="chatStatus">Online</p>
+          </div>
+        </div>
+
+        <!-- Messages Area -->
+        <div class="messages-area" id="messagesArea">
+          <!-- Messages will be loaded here -->
+        </div>
+
+        <!-- Input Area -->
+        <div class="chat-input-area">
+          <input type="text" id="messageInput" placeholder="Type your message..." class="message-input">
+          <button onclick="sendMessage()" class="send-btn">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2026 Ardhangii. All rights reserved.</p>
+  </footer>
+
+  <script src="/js/main.js"></script>
+  <script src="/js/chat.js"></script>
+</body>
+</html>

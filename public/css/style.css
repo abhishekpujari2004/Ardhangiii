@@ -59,6 +59,16 @@ button {
   color: white;
   font-size: 1.4rem;
   font-weight: 700;
+  display: flex;
+  align-items: center;
+}
+
+.logo-img {
+  height: 45px;
+  width: auto;
+  max-width: 180px;
+  object-fit: contain;
+  display: block;
 }
 
 .nav-toggle {
@@ -508,6 +518,11 @@ footer {
     padding: 1rem 1.25rem;
   }
 
+  .logo-img {
+    height: 38px;
+    max-width: 150px;
+  }
+
   .nav-toggle {
     display: inline-flex;
   }
@@ -579,6 +594,11 @@ footer {
 
   .hero-content p {
     font-size: 1rem;
+  }
+
+  .logo-img {
+    height: 32px;
+    max-width: 120px;
   }
 
   .cta-btn,

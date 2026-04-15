@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complete Your Profile - Ardhangii</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/survey.css">
+</head>
+<body>
+  <nav class="main-nav">
+    <div class="nav-brand"><a href="/"><img src="/logo.jpeg" alt="Ardhangii Logo" class="logo-img"></a></div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation"><span></span></button>
+    <div class="nav-links">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About Us</a></li>
+        <li><a href="/help">Help</a></li>
+        <li><a href="/feedback">Feedback</a></li>
+      </ul>
+      <div class="nav-right"></div>
+    </div>
+  </nav>
+
+  <!-- Survey Container -->
+  <div class="container">
+    <div class="survey-wrapper">
+      <div class="survey-header">
+        <h1>Complete Your Profile</h1>
+        <p>Help us find your perfect match by telling us more about yourself</p>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <span class="progress-text" id="progressText">0%</span>
+      </div>
+
+      <form id="surveyForm" class="survey-form" onsubmit="return false;">
+        <!-- Personal Details Section -->
+        <div class="form-section">
+          <h3>Physical Details</h3>
+          
+          <div class="form-group">
+            <label for="height">Height *</label>
+            <input type="text" id="height" name="height" placeholder="e.g., 5'8\", 175 cm" required>
+          </div>
+
+          <div class="form-group">
+            <label>Diet Preference *</label>
+            <div class="checkbox-group">
+              <label class="checkbox"><input type="checkbox" name="diet" value="Veg"> Veg</label>
+              <label class="checkbox"><input type="checkbox" name="diet" value="Non-Veg"> Non-Veg</label>
+              <label class="checkbox"><input type="checkbox" name="diet" value="Eggetarian"> Eggetarian</label>
+              <label class="checkbox"><input type="checkbox" name="diet" value="Vegan"> Vegan</label>
+              <label class="checkbox"><input type="checkbox" name="diet" value="Occasionally NV"> Occasionally NV</label>
+              <label class="checkbox"><input type="checkbox" name="diet" value="Jain"> Jain</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Education & Profession Section -->
+        <div class="form-section">
+          <h3>Education & Career</h3>
+
+          <div class="form-group">
+            <label for="qualification">Qualification *</label>
+            <input type="text" id="qualification" name="qualification" placeholder="e.g., B.Tech, M.B.A, B.A" required>
+          </div>
+
+          <div class="form-group">
+            <label for="collegeName">College/University Name</label>
+            <input type="text" id="collegeName" name="collegeName" placeholder="Your college name">
+          </div>
+
+          <div class="form-group">
+            <label for="profession">Profession *</label>
+            <input type="text" id="profession" name="profession" placeholder="e.g., Software Engineer, Doctor, Teacher" required>
+          </div>
+
+          <div class="form-group">
+            <label for="workSector">Work Sector</label>
+            <select id="workSector" name="workSector">
+              <option value="">Select Sector</option>
+              <option value="Private">Private</option>
+              <option value="Gov">Government</option>
+              <option value="Defense">Defense</option>
+              <option value="Business">Business</option>
+              <option value="No work">No work</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="income">Annual Income *</label>
+            <input type="text" id="income" name="income" placeholder="e.g., 5-10 LPA, 10-20 LPA" required>
+          </div>
+        </div>
+
+        <!-- Interests & Hobbies Section -->
+        <div class="form-section">
+          <h3>Interests & Hobbies</h3>
+          
+          <div class="form-group">
+            <label>What are your interests? *</label>
+            <div class="checkbox-group">
+              <label class="checkbox"><input type="checkbox" name="interests" value="Reading"> Reading</label>
+              <label class="checkbox"><input type="checkbox" name="interests" value="Traveling"> Traveling</label>
+              <label class="checkbox"><input type="checkbox" name="interests" value="Sports"> Sports</label>
+              <label class="checkbox"><input type="checkbox" name="interests" value="Cooking"> Cooking</label>
+              <label class="checkbox"><input type="checkbox" name="interests" value="Music"> Music</label>
+              <label class="checkbox"><input type="checkbox" name="interests" value="Movies"> Movies</label>
+              <label class="checkbox"><input type="checkbox" name="interests" value="Fitness"> Fitness</label>
+              <label class="checkbox"><input type="checkbox" name="interests" value="Gaming"> Gaming</label>
+              <label class="checkbox"><input type="checkbox" name="interests" value="Art"> Art</label>
+              <label class="checkbox"><input type="checkbox" name="interests" value="Photography"> Photography</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="hobbies">Other Hobbies</label>
+            <input type="text" id="hobbies" name="hobbies" placeholder="Comma-separated hobbies">
+          </div>
+        </div>
+
+        <!-- Lifestyle Section -->
+        <div class="form-section">
+          <h3>Lifestyle Choices</h3>
+
+          <div class="form-group">
+            <label>Smoking *</label>
+            <div class="radio-group">
+              <label class="radio"><input type="radio" name="smoking" value="Yes"> Yes</label>
+              <label class="radio"><input type="radio" name="smoking" value="No"> No</label>
+              <label class="radio"><input type="radio" name="smoking" value="Occasionally"> Occasionally</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Drinking *</label>
+            <div class="radio-group">
+              <label class="radio"><input type="radio" name="drinking" value="Yes"> Yes</label>
+              <label class="radio"><input type="radio" name="drinking" value="No"> No</label>
+              <label class="radio"><input type="radio" name="drinking" value="Occasionally"> Occasionally</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Preferences Section -->
+        <div class="form-section">
+          <h3>What Are You Looking For?</h3>
+
+          <div class="form-group">
+            <label>Age Preference (Range) *</label>
+            <div class="age-preference">
+              <input type="number" id="ageMin" name="ageMin" min="18" max="100" placeholder="Min Age" required>
+              <span>to</span>
+              <input type="number" id="ageMax" name="ageMax" min="18" max="100" placeholder="Max Age" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Preferred Religions</label>
+            <div class="checkbox-group">
+              <label class="checkbox"><input type="checkbox" name="religionPref" value="Hindu"> Hindu</label>
+              <label class="checkbox"><input type="checkbox" name="religionPref" value="Muslim"> Muslim</label>
+              <label class="checkbox"><input type="checkbox" name="religionPref" value="Christian"> Christian</label>
+              <label class="checkbox"><input type="checkbox" name="religionPref" value="Sikh"> Sikh</label>
+              <label class="checkbox"><input type="checkbox" name="religionPref" value="Buddhist"> Buddhist</label>
+              <label class="checkbox"><input type="checkbox" name="religionPref" value="Jain"> Jain</label>
+              <label class="checkbox"><input type="checkbox" name="religionPref" value="No Preference"> No Preference</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Preferred Locations</label>
+            <input type="text" id="locationPref" name="locationPref" placeholder="Comma-separated cities you're interested in">
+          </div>
+
+          <div class="form-group">
+            <label>Preferred Education Level</label>
+            <input type="text" id="educationPref" name="educationPref" placeholder="e.g., B.Tech, M.B.A, Any">
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" onclick="window.history.back()">Go Back</button>
+          <button type="submit" class="cta-btn">Complete Profile & Find Matches</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2026 Ardhangii. All rights reserved.</p>
+  </footer>
+
+  <script src="/js/main.js" defer></script>
+  <script src="/js/survey.js" defer></script>
+</body>
+</html>

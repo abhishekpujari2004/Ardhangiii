@@ -1,0 +1,515 @@
+/* Tinder-Style Members Page */
+
+:root {
+  --primary-color: #e74c3c;
+  --secondary-color: #c0392b;
+  --success-color: #27ae60;
+  --light-bg: #f8f9fa;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.members-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 1rem;
+  min-height: calc(100vh - 200px);
+  display: flex;
+  flex-direction: column;
+}
+
+.members-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.members-header h1 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.members-header p {
+  font-size: 1rem;
+  color: #666;
+}
+
+.members-actions {
+  margin-top: 1rem;
+}
+
+.btn.btn-primary {
+  display: inline-block;
+  padding: 0.75rem 1.25rem;
+  background: var(--primary-color);
+  color: #fff;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 700;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(231, 76, 60, 0.2);
+}
+
+.registered-members-section {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+}
+
+.registered-members-section h2 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.members-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.member-tile {
+  padding: 1rem;
+  background: var(--light-bg);
+  border-radius: 12px;
+  border: 1px solid #ececec;
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.member-tile strong {
+  font-size: 1rem;
+}
+
+.member-tile span {
+  color: #777;
+  margin-left: 0.35rem;
+  font-weight: 600;
+}
+
+.member-tile div:last-child {
+  color: #666;
+}
+
+/* Swipe Area */
+.swipe-area {
+  flex: 1;
+  position: relative;
+  height: 600px;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Cards Stack */
+.cards-stack {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  perspective: 1000px;
+}
+
+/* Individual Card */
+.card {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: white;
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  cursor: grab;
+  active:cursor: grabbing;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  touch-action: none;
+}
+
+.card:active {
+  cursor: grabbing;
+}
+
+.card.swiping-left {
+  animation: swipeLeft 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}
+
+.card.swiping-right {
+  animation: swipeRight 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}
+
+/* Swipe Animations */
+@keyframes swipeLeft {
+  0% {
+    transform: translateX(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-150%) rotate(-45deg);
+    opacity: 0;
+  }
+}
+
+@keyframes swipeRight {
+  0% {
+    transform: translateX(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(150%) rotate(45deg);
+    opacity: 0;
+  }
+}
+
+/* Card Content */
+.card-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-image {
+  width: 100%;
+  height: 60%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 5rem;
+  font-weight: bold;
+}
+
+.card-info {
+  padding: 1.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.card-header {
+  margin-bottom: 1rem;
+}
+
+.card-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+}
+
+.card-subtitle {
+  font-size: 1rem;
+  opacity: 0.9;
+  margin-bottom: 0.5rem;
+}
+
+.card-compatibility {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.3);
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.card-details {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+.card-interests {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.interest-tag {
+  background: rgba(255, 255, 255, 0.25);
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+}
+
+/* No Profiles State */
+.no-profiles {
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.no-profiles h2 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.no-profiles p {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+/* Loading State */
+.loading-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.btn-skip,
+.btn-like,
+.btn-superlike {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-skip span,
+.btn-like span,
+.btn-superlike span {
+  font-size: 2.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.btn-skip p,
+.btn-like p,
+.btn-superlike p {
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.btn-skip {
+  background: white;
+  color: #999;
+  border: 3px solid #ddd;
+}
+
+.btn-skip:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.btn-like {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+}
+
+.btn-like:hover {
+  transform: scale(1.15);
+  box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
+}
+
+.btn-superlike {
+  background: linear-gradient(135deg, #ffd89b, #ffb347);
+  color: white;
+}
+
+.btn-superlike:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(255, 183, 71, 0.4);
+}
+
+.btn-skip:active,
+.btn-like:active,
+.btn-superlike:active {
+  transform: scale(0.95);
+}
+
+/* Member Stats */
+.member-stats {
+  text-align: center;
+  padding: 1.5rem;
+  background: var(--light-bg);
+  border-radius: 10px;
+  margin-top: auto;
+}
+
+.member-stats p {
+  margin: 0.5rem 0;
+  font-size: 0.95rem;
+  color: #666;
+}
+
+.member-stats span {
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+/* Chat Link */
+.chat-link {
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.chat-link:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.btn-logout {
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+
+.btn-logout:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .members-container {
+    max-width: 100%;
+    margin: 1rem 0;
+    padding: 0.5rem;
+  }
+
+  .members-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .swipe-area {
+    height: 500px;
+  }
+
+  .action-buttons {
+    gap: 1.5rem;
+  }
+
+  .btn-skip,
+  .btn-like,
+  .btn-superlike {
+    width: 70px;
+    height: 70px;
+    font-size: 1.8rem;
+  }
+
+  .btn-skip span,
+  .btn-like span,
+  .btn-superlike span {
+    font-size: 2rem;
+  }
+
+  .card-info {
+    padding: 1rem;
+  }
+
+  .card-title {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .members-container {
+    margin: 0.5rem 0;
+    padding: 0.25rem;
+  }
+
+  .members-header h1 {
+    font-size: 1.3rem;
+  }
+
+  .members-header p {
+    font-size: 0.9rem;
+  }
+
+  .swipe-area {
+    height: 450px;
+    margin-bottom: 1.5rem;
+  }
+
+  .action-buttons {
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .btn-skip,
+  .btn-like,
+  .btn-superlike {
+    width: 60px;
+    height: 60px;
+  }
+
+  .btn-skip span,
+  .btn-like span,
+  .btn-superlike span {
+    font-size: 1.5rem;
+    margin-bottom: 0;
+  }
+
+  .btn-skip p,
+  .btn-like p,
+  .btn-superlike p {
+    display: none;
+  }
+
+  .card-image {
+    height: 50%;
+    font-size: 3rem;
+  }
+
+  .card-info {
+    padding: 0.75rem;
+  }
+
+  .card-title {
+    font-size: 1.1rem;
+  }
+
+  .card-details {
+    font-size: 0.85rem;
+  }
+
+  .member-stats {
+    padding: 1rem;
+  }
+
+  .member-stats p {
+    font-size: 0.85rem;
+  }
+}
