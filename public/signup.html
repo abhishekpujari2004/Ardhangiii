@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up - Marriage Bureau</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="main-nav">
+    <div class="nav-brand"><a href="/">Marriage Bureau</a></div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation"><span></span></button>
+    <div class="nav-links">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About Us</a></li>
+        <li><a href="/help">Help</a></li>
+        <li><a href="/feedback">Feedback</a></li>
+      </ul>
+      <div class="nav-right"></div>
+    </div>
+  </nav>
+
+  <!-- Signup Form -->
+  <div class="container">
+    <div class="form-container">
+      <h2 style="text-align: center; color: var(--primary-color); margin-bottom: 2rem;">Create Your Account</h2>
+      
+      <form id="signupForm">
+        <div class="form-group">
+          <label for="name">Full Name *</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="gender">Gender *</label>
+          <select id="gender" name="gender" required>
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="birthdate">Date of Birth *</label>
+          <input type="date" id="birthdate" name="birthdate" required>
+        </div>
+
+        <div class="form-group">
+          <label for="religion">Religion *</label>
+          <input type="text" id="religion" name="religion" placeholder="e.g., Hindu, Muslim, Christian" required>
+        </div>
+
+        <div class="form-group">
+          <label for="community">Community *</label>
+          <input type="text" id="community" name="community" placeholder="e.g., Brahmin, Marathi, Punjabi" required>
+        </div>
+
+        <div class="form-group">
+          <label for="country">Country *</label>
+          <input type="text" id="country" name="country" placeholder="e.g., India, USA, Canada" required>
+        </div>
+
+        <div class="form-group">
+          <label for="city">City *</label>
+          <input type="text" id="city" name="city" placeholder="e.g., Mumbai, Delhi, Bangalore" required>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address *</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+
+        <div class="form-group">
+          <label for="mobile">Mobile Number *</label>
+          <input type="tel" id="mobile" name="mobile" placeholder="10-digit mobile number" required>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password *</label>
+          <input type="password" id="password" name="password" required>
+        </div>
+
+        <div class="form-group">
+          <label for="confirmPassword">Confirm Password *</label>
+          <input type="password" id="confirmPassword" name="confirmPassword" required>
+        </div>
+
+        <button type="submit" class="cta-btn" style="width: 100%; margin-top: 1rem;">Create Account</button>
+
+        <div class="form-footer">
+          <p>Already have an account? <a href="/login">Login here</a></p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2024 Marriage Bureau. All rights reserved.</p>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

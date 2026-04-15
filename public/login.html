@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Marriage Bureau</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="main-nav">
+    <div class="nav-brand"><a href="/">Marriage Bureau</a></div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation"><span></span></button>
+    <div class="nav-links">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About Us</a></li>
+        <li><a href="/help">Help</a></li>
+        <li><a href="/feedback">Feedback</a></li>
+      </ul>
+      <div class="nav-right"></div>
+    </div>
+  </nav>
+
+  <!-- Login Form -->
+  <div class="container">
+    <div class="form-container">
+      <h2 style="text-align: center; color: var(--primary-color); margin-bottom: 2rem;">Welcome Back</h2>
+      
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="emailOrMobile">Email or Mobile Number *</label>
+          <input type="text" id="emailOrMobile" name="emailOrMobile" placeholder="Enter your email or mobile number" required>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password *</label>
+          <input type="password" id="password" name="password" required>
+        </div>
+
+        <button type="submit" class="cta-btn" style="width: 100%; margin-top: 1rem;">Login</button>
+
+        <div class="form-footer">
+          <p>Don't have an account? <a href="/signup">Sign up here</a></p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2024 Marriage Bureau. All rights reserved.</p>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

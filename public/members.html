@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Members - Marriage Bureau</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="main-nav">
+    <div class="nav-brand"><a href="/">Marriage Bureau</a></div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation"><span></span></button>
+    <div class="nav-links">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About Us</a></li>
+        <li><a href="/help">Help</a></li>
+        <li><a href="/feedback">Feedback</a></li>
+      </ul>
+      <div class="nav-right"></div>
+    </div>
+  </nav>
+
+  <!-- Members List -->
+  <div class="container">
+    <h1 style="text-align: center; color: var(--primary-color); margin: 2rem 0;">Our Members</h1>
+    
+    <div class="loading-container" id="loadingContainer">
+      <div class="loader"></div>
+      <p>Loading members...</p>
+    </div>
+
+    <div class="members-grid" id="membersContainer"></div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2024 Marriage Bureau. All rights reserved.</p>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    // Show loading container and hide it when members are loaded
+    window.addEventListener('load', () => {
+      const loadingContainer = document.getElementById('loadingContainer');
+      setTimeout(() => {
+        loadingContainer.style.display = 'none';
+      }, 1000);
+    });
+  </script>
+</body>
+</html>
