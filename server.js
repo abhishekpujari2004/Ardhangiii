@@ -19,31 +19,42 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/marria
 mongoose.set('strictQuery', true);
 
 const mongoOptions = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  autoReconnect: true,
-  keepAlive: true,
-  keepAliveInitialDelay: 300000,
   serverSelectionTimeoutMS: 5000,
   socketTimeoutMS: 45000,
   maxPoolSize: 20,
   autoIndex: true
 };
 
+let isConnecting = false;
 let retryCount = 0;
-const connectWithRetry = () => {
-  mongoose.connect(MONGODB_URI, mongoOptions)
-    .then(() => {
-      retryCount = 0;
-      console.log('MongoDB connected');
-    })
-    .catch((err) => {
-      retryCount += 1;
-      console.error(`MongoDB connection error (attempt ${retryCount}):`, err.message);
+const maxRetries = 5;
+
+const connectWithRetry = async () => {
+  if (isConnecting) return;
+  isConnecting = true;
+
+  try {
+    await mongoose.connect(MONGODB_URI, mongoOptions);
+    retryCount = 0;
+    console.log('MongoDB connected successfully');
+  } catch (err) {
+    retryCount += 1;
+    console.error(`MongoDB connection error (attempt ${retryCount}/${maxRetries}):`, err.message);
+
+    if (retryCount < maxRetries) {
       const retryDelay = Math.min(5000 * retryCount, 30000);
       console.log(`Retrying MongoDB connection in ${retryDelay / 1000} seconds...`);
-      setTimeout(connectWithRetry, retryDelay);
-    });
+      setTimeout(() => {
+        isConnecting = false;
+        connectWithRetry();
+      }, retryDelay);
+    } else {
+      console.error('Max MongoDB connection retries reached. Please check your connection string and MongoDB server.');
+      process.exit(1);
+    }
+  } finally {
+    isConnecting = false;
+  }
 };
 
 mongoose.connection.on('connected', () => {
@@ -55,8 +66,11 @@ mongoose.connection.on('error', (err) => {
 });
 
 mongoose.connection.on('disconnected', () => {
-  console.warn('MongoDB event: disconnected. Attempting reconnect...');
-  connectWithRetry();
+  console.warn('MongoDB event: disconnected');
+  if (!isConnecting && retryCount < maxRetries) {
+    console.log('Attempting to reconnect...');
+    connectWithRetry();
+  }
 });
 
 mongoose.connection.on('reconnected', () => {
@@ -66,6 +80,7 @@ mongoose.connection.on('reconnected', () => {
 connectWithRetry();
 
 process.on('SIGINT', async () => {
+  console.log('Shutting down gracefully...');
   await mongoose.disconnect();
   process.exit(0);
 });
@@ -319,6 +334,20 @@ app.use((req, res) => {
 
 // Start server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+
+const startServer = (port) => {
+  const server = app.listen(port, () => {
+    console.log(`Server running on http://localhost:${port}`);
+  });
+
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.log(`Port ${port} is busy, trying port ${port + 1}...`);
+      startServer(port + 1);
+    } else {
+      console.error('Server error:', err);
+    }
+  });
+};
+
+startServer(PORT);

@@ -1,11 +1,13 @@
 {
-  "name": "marriage-bureau",
+  "name": "Ardhangii",
   "version": "1.0.0",
-  "description": "Full-stack Marriage Bureau Website",
+  "description": "Full-stack Ardhangii Website",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "kill-port": "for /f \"tokens=5\" %a in ('netstat -aon ^| find \":5000\" ^| find \"LISTENING\"') do taskkill /f /pid %a",
+    "clean-start": "npm run kill-port && node server.js"
   },
   "keywords": [
     "matrimonial",
